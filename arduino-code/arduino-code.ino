@@ -2,9 +2,10 @@
 #include <VariableTimedAction.h>
 #include "FastLED.h"
 
-#define NUM_LEDS 50
+#define NUM_LEDS 20
 #define DISTANCE_THRESHOLD 50 // We can change this in the future.
-
+#define DATA_PIN 3
+#define CLOCK_PIN 13
 
 CRGB leds[NUM_LEDS];
 CRGB ROULETTE[] = {CRGB::Beige, CRGB::Blue, CRGB::Red, CRGB::Yellow, CRGB::Green, CRGB::DarkCyan, CRGB::Magenta, CRGB::DarkBlue, CRGB::Maroon, CRGB::MediumPurple};
@@ -82,18 +83,29 @@ public:
 
 LED led;
 HcResult sensorResults;
+int j;
+unsigned long lastUpdate;
 HCSR04 hc(6, new int[N_SENSORS] {11}, N_SENSORS); //initialisation class HCSR04 (trig pin , echo pin, number of sensor)
 void setup() { 
-  FastLED.addLeds<NEOPIXEL, 6>(leds, NUM_LEDS); 
+  FastLED.addLeds<DOTSTAR, DATA_PIN, CLOCK_PIN, RGB>(leds, NUM_LEDS); 
+//  FastLED.addLeds<NEOPIXEL, 6>(leds, NUM_LEDS); 
   Serial.begin(115200);
+  j=0;
+  lastUpdate = 0;
 }
 
 
 void loop() {  
   sensorResults = detectObject(hc, DISTANCE_THRESHOLD);
-  if (millis() - led.lastUpdate > 20) {
-    led.run();
-    led.lastUpdate = millis();
+  if (sensorResults.objectDetected[0] && millis() - lastUpdate > 100) {
+  Serial.println("Update");
+    for (int i = 0; i < NUM_LEDS; i++) {
+     leds[i] = ROULETTE[j];
+    }
+    FastLED.show();
+    j = (j + 1) % roulette_length;
+    lastUpdate = millis();
+  } else if (!sensorResults.objectDetected[0]) {
+    Serial.println("==========");
   }
 }
-
