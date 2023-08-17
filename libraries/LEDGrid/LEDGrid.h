@@ -23,7 +23,10 @@ Users specify the number of rows and columns of LED strips, as well as the numbe
 
 class LEDGrid {
 public:
-  typedef CRGB (*ColorFunction)(float y, float x, float t, const CRGB history[HISTORY_BUFFER_DEPTH]);
+  // Function that takes in a (y, x) position in [-1, 1]x[-1, 1], the
+  // time t in seconds since viz initialization, and a history
+  // buffer for position (y,x).
+  typedef CRGB (*ColorFunction)(float y, float x, float t, CRGB history[HISTORY_BUFFER_DEPTH]);
   
   static const float gridWidth;
   static const float gridHeight;

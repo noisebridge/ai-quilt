@@ -1,3 +1,5 @@
+#include <FastLED.h>
+
 #include "LEDGrid.h"
 
 // Initialize the per-cell relative LED X and Y positions
