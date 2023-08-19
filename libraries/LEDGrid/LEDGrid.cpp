@@ -2,20 +2,12 @@
 
 #include "LEDGrid.h"
 
-// Initialize the per-cell relative LED X and Y positions
-const float LEDGrid::LED_REL_POS_X[N_LEDS_PER_STRIP] = {
-    0,0,0, 0,0,0, 0,0,0,  
-    0,1./8,2./8, 3./8,4./8,5./8, 6./8,7./8,1,
-    1,1,1, 1,1,1, 1,1,1};
-const float LEDGrid::LED_REL_POS_Y[N_LEDS_PER_STRIP] = {
-    0,1./9,2./9, 3./9,4./9,5./9, 6./9,7./9,8./9,
-    1,1,1, 1,1,1, 1,1,1,
-    8./9,7./9,6./9, 5./9,4./9,3./9, 2./9,1./9,0};
+
 
 // Compute the LED Grid "width", in normalized coordinates where each cell
 // has width 1 and height 1
-const float LEDGrid::gridWidth = N_COLS + (N_COLS - 1) * BORDER_WIDTH_X;
-const float LEDGrid::gridHeight = N_ROWS + (N_ROWS - 1) * BORDER_WIDTH_Y;
+const float LEDGrid::gridWidth = N_COLS + (N_COLS - 1) * REL_COL_BORDER_WIDTH;
+const float LEDGrid::gridHeight = N_ROWS + (N_ROWS - 1) * REL_ROW_BORDER_WIDTH;
 
 // Constructor: Initialize LEDs on each data pin, set all LEDs to black, and
 // Set the initial color function.
@@ -75,8 +67,8 @@ void LEDGrid::yxFromIndex(uint8_t row, uint8_t col, uint8_t idx, float *y, float
 
   //  Get unnormalized LED position as
   // Cell anchor absolute position + LED relative position
-  *y = row * (1 + BORDER_WIDTH_Y) + LED_REL_POS_Y[idx];
-  *x = col * (1 + BORDER_WIDTH_X) + LED_REL_POS_X[idx];
+  *y = row * (1 + REL_ROW_BORDER_WIDTH) + LED_REL_POS_Y[idx];
+  *x = col * (1 + REL_COL_BORDER_WIDTH) + LED_REL_POS_X[idx];
   // Normalize to [0, 1] then to [-1, 1]
   *y = 2 * *y / gridHeight - 1;
   *x = 2 * *x / gridWidth - 1;

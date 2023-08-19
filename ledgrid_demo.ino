@@ -3,16 +3,14 @@
 #include <FastLED.h>
 
 #include "libraries/LEDGrid/LEDGrid.h"
-
-// Define the data pins connected to the rows of the LED grid
-const byte ledDataPins[N_ROWS] = {13, 14, 15, 16, 17, 18};
+#include "config.h"
 
 // Define a sample ColorFunction that just returns a radially-varying hue.
 const CRGB colorFunction(float y, float x, float t, CRGB history[HISTORY_BUFFER_DEPTH]) {
   return CHSV(uint8_t(fmod(80 * (y * y + x * x) + 10 * t, 256.)), 255, 255);
 }
 
-LEDGrid ledGrid(ledDataPins, colorFunction);
+LEDGrid ledGrid(LED_DATA_PINS, colorFunction);
 unsigned long startTime;
 
 void setup() {

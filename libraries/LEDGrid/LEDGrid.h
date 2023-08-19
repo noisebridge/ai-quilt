@@ -1,7 +1,7 @@
 /* LEDGrid.h
 Header for the LEDGrid class, which abstracts the illumination of a grid of WS2812B LED strips.
 
-Users specify the number of rows and columns of LED strips, as well as the number of LEDs per strip.
+Users specify grid configuration information in config.h in the project root folder.
 
 */
 #ifndef LEDGRID_H
@@ -9,16 +9,8 @@ Users specify the number of rows and columns of LED strips, as well as the numbe
 
 #include <FastLED.h>
 
-// LED Grid layout constants
-#define N_ROWS 6
-#define N_COLS 6
-#define N_LEDS_PER_STRIP 27
-// Border size (relative to grid cell interior size).
-// Assumes a 6" grid cell interior and 0.5" borders.
-#define BORDER_WIDTH_Y 0.08333
-#define BORDER_WIDTH_X 0.08333
-// Maintain a history of LED colors for this number of past steps.
-#define HISTORY_BUFFER_DEPTH 10
+// Main project config
+#include "../../config.h"
 
 
 class LEDGrid {
